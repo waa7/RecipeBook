@@ -6,6 +6,7 @@
 package edu.mum.cs545.recipebook.repository;
 
 import edu.mum.cs545.recipebook.domain.UserEntity;
+import edu.mum.cs545.recipebook.domain.UserRole;
 
 /**
  *
@@ -16,8 +17,8 @@ import edu.mum.cs545.recipebook.domain.UserEntity;
 public interface UserRepository {
     
 
-    public UserEntity createUser(UserEntity user);
-    
+    //public UserEntity createUser(UserEntity user);
+    public UserEntity createUser(String userName, String email, String password, UserRole userRole);
      /**
      * Creates a new user.
      * 

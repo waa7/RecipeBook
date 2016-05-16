@@ -6,8 +6,8 @@
 package edu.mum.cs545.recipebook.service.impl;
 
 import edu.mum.cs545.recipebook.domain.UserEntity;
-import edu.mum.cs545.recipebook.repository.InMemoryUserRepository;
 import edu.mum.cs545.recipebook.repository.UserRepository;
+import edu.mum.cs545.recipebook.repository.impl.UserRepositoryImpl;
 import edu.mum.cs545.recipebook.service.UserServiceProvider;
 
 /**
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserServiceProvider{
     UserRepository userRepository;
 
     public UserServiceImpl() {
-        userRepository = new InMemoryUserRepository();
+        userRepository = new UserRepositoryImpl();
     }
     
     @Override
@@ -33,20 +33,24 @@ public class UserServiceImpl implements UserServiceProvider{
     @Override
     public UserEntity createUser(UserEntity user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return userRepository.createUser(userName, email, password, UserRole.CUSTOMER);
     }
 
     @Override
     public void updateUser(UserEntity userEntity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        userRepository.updateUser(userEntity);
     }
 
     @Override
     public UserEntity findUserById(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userRepository.findUserById(userId);
     }
 
     @Override
     public UserEntity findUserByName(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userRepository.findUserByName(userName);
     }
 }
