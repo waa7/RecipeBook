@@ -18,8 +18,8 @@ public interface UserRepository {
     
 
     //public UserEntity createUser(UserEntity user);
-    public UserEntity createUser(String userName, String email, String password, UserRole userRole);
-     /**
+    public void addUser(UserEntity user) ;
+    /**
      * Creates a new user.
      * 
      * @param user the {@link  User to create}

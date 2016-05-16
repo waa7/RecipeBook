@@ -31,9 +31,10 @@ public class UserServiceImpl implements UserServiceProvider{
     }
 
     @Override
-    public UserEntity createUser(UserEntity user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addUser(UserEntity user) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         //return userRepository.createUser(userName, email, password, UserRole.CUSTOMER);
+        userRepository.addUser(user);
     }
 
     @Override

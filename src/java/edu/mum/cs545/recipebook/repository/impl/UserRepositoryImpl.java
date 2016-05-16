@@ -33,7 +33,13 @@ public class UserRepositoryImpl implements UserRepository{
         
     }
     
+    
+    
     @Override
+    public void addUser(UserEntity user) {
+        userFacade.create(user);
+    }
+    
     public UserEntity createUser(String userName, String email, String password, UserRole userRole) {
         UserEntity newUser = new UserEntity(userName,email,password,userRole);
         if(userFacade.find(newUser) == null) {
