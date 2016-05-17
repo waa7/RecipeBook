@@ -5,39 +5,23 @@
  */
 package edu.mum.cs545.recipebook.repository.impl;
 
-import edu.mum.cs545.recipebook.domain.MenuItemEntity;
-import edu.mum.cs545.recipebook.repository.MenuRepository;
-import java.util.List;
+import edu.mum.cs545.recipebook.domain.CommentEntity; 
+import edu.mum.cs545.recipebook.repository.CommentRepository;  
 
 /**
  *
  * @author user
  */
-public class CommentRepositoryImpl implements MenuRepository{
+public class CommentRepositoryImpl implements CommentRepository{
 
     @Override
-    public MenuItemEntity addNewMenu(MenuItemEntity menuItem) {
+    public CommentEntity addNewComment(CommentEntity comment) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateMenuItem(MenuItemEntity menuItem) {
+    public void deleteComment(String commentId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public MenuItemEntity findItemById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<MenuItemEntity> findItemsByTitle(String title) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<MenuItemEntity> findItemsByUserId(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+ 
 }

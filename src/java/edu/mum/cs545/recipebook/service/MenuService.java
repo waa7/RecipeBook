@@ -7,13 +7,14 @@ package edu.mum.cs545.recipebook.service;
 
 import edu.mum.cs545.recipebook.domain.CommentEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
+import edu.mum.cs545.recipebook.domain.UserEntity;
 import java.util.List;
 
 /**
  *
  * @author Endalkachew Asnake
  */
-public interface MenuServiceProvider {
+public interface MenuService {
     
     /**
      * Creates a new menu Item.
@@ -35,7 +36,7 @@ public interface MenuServiceProvider {
      * @param id the ID to use for searching.
      * @return the {@link MenuItemEntity} if found, null otherwise.
      */
-    public MenuItemEntity findItemById(String id);
+    public MenuItemEntity findItemById(Long id);
     /**
      * Finds menu items with similar title.
      * 
@@ -47,10 +48,16 @@ public interface MenuServiceProvider {
     /**
      * Finds menu items created by the specified user.
      * 
-     * @param userId the user id.
-     * @return list of {@link MenuItemEntity} with matching userId.
+     * @param userEntity 
+     * @return list of {@link MenuItemEntity} with matching user entity.
      */
-    public List<MenuItemEntity> findItemsByUserId(String userId); 
+    public List<MenuItemEntity> findItemsByUser(UserEntity userEntity); 
+    
+    /**
+     * Gets list of current menu items.
+     * @return 
+     */
+    public List<MenuItemEntity> getCurrentMenuItems();
      
      /**
      * Creates a new comment.

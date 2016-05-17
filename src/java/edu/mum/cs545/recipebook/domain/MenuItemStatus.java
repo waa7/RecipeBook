@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.mum.cs545.recipebook.controller;
+package edu.mum.cs545.recipebook.domain;
 
 /**
  *
- * @author Endlakachew Asnake
+ * @author user
  */
-public class UserController {
+public enum MenuItemStatus {
     
+    CURRENT,
+    
+    SUGGESTED
 }

@@ -26,7 +26,8 @@ public class MenuItemEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-   private String title;
+    
+    private String title;
     
     private String description; 
     
@@ -42,6 +43,8 @@ public class MenuItemEntity implements Serializable {
     
     private int numberOfRatings;
     
+     private MenuItemStatus status;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuItemEntity")
     private List<CommentEntity> comments;
     
@@ -51,17 +54,15 @@ public class MenuItemEntity implements Serializable {
     public MenuItemEntity() {
     }
 
-    public MenuItemEntity(String title, String description, MenuType menuType, Category category, List<String> recipes, String cookingInstruction, float averageRating, int numberOfRatings, List<CommentEntity> comments, UserEntity createdBy) {
+    public MenuItemEntity(String title, String description, MenuType menuType, Category category, List<String> recipes, String cookingInstruction,  UserEntity createdBy, MenuItemStatus status) {
         this.title = title;
         this.description = description;
         this.menuType = menuType;
         this.category = category;
         this.recipes = recipes;
         this.cookingInstruction = cookingInstruction;
-        this.averageRating = averageRating;
-        this.numberOfRatings = numberOfRatings;
-        this.comments = comments;
         this.createdBy = createdBy;
+        this.status = status;
     }
     
     
@@ -153,6 +154,15 @@ public class MenuItemEntity implements Serializable {
     public void setCreatedBy(UserEntity createdBy) {
         this.createdBy = createdBy;
     }
+
+    public MenuItemStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MenuItemStatus status) {
+        this.status = status;
+    }
+    
     
     @Override
     public int hashCode() {

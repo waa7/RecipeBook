@@ -5,7 +5,10 @@
  */
 package edu.mum.cs545.recipebook.repository.impl;
 
+import edu.mum.cs545.recipebook.db.MenuItemEntityFacade;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
+import edu.mum.cs545.recipebook.domain.MenuItemStatus;
+import edu.mum.cs545.recipebook.domain.UserEntity;
 import edu.mum.cs545.recipebook.repository.MenuRepository;
 import java.util.List;
 
@@ -15,29 +18,41 @@ import java.util.List;
  */
 public class MenuRepositoryImpl implements MenuRepository{
 
+    private MenuItemEntityFacade menuFacade;
+    
+    public MenuRepositoryImpl(MenuItemEntityFacade menuFacade){
+        this.menuFacade = menuFacade;
+    } 
+  
     @Override
-    public MenuItemEntity addNewMenu(MenuItemEntity menuItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MenuItemEntity addNewMenu(MenuItemEntity menuItem) { 
+        menuFacade.create(menuItem); 
+        return menuItem;
     }
 
     @Override
     public void updateMenuItem(MenuItemEntity menuItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        menuFacade.edit(menuItem);
     }
 
     @Override
-    public MenuItemEntity findItemById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MenuItemEntity findItemById(Long id) {
+        return menuFacade.find(id);
     }
 
     @Override
-    public List<MenuItemEntity> findItemsByTitle(String title) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<MenuItemEntity> findItemsByTitle(String title) {  
+        return menuFacade.findItemsByTitle(title);
     }
 
     @Override
-    public List<MenuItemEntity> findItemsByUserId(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<MenuItemEntity> findItemsByUser(UserEntity userEntity) { 
+        return menuFacade.findItemsByUser(userEntity);
+    }
+
+    @Override
+    public List<MenuItemEntity> findItemsByStatus(MenuItemStatus status) {
+        return menuFacade.findItemsByStus(status);
     }
     
 }

@@ -11,7 +11,7 @@ import edu.mum.cs545.recipebook.domain.UserEntity;
  *
  * @author Endalkachew Asnake
  */
-public interface UserServiceProvider {
+public interface UserService {
     /**
      * Creates a new user.
      * 

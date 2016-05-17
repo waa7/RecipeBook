@@ -5,33 +5,47 @@
  */
 package edu.mum.cs545.recipebook.repository.impl;
 
+import edu.mum.cs545.recipebook.db.UserEntityFacade;
 import edu.mum.cs545.recipebook.domain.UserEntity;
 import edu.mum.cs545.recipebook.repository.UserRepository;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 /**
  *
  * @author user
- */
+ */ 
 public class UserRepositoryImpl implements UserRepository{
+ 
+    private UserEntityFacade userEntityFacade;
 
+    public UserRepositoryImpl() {
+    }
+    
+    public UserRepositoryImpl(UserEntityFacade userEntityFacade){ 
+        this.userEntityFacade = userEntityFacade;
+    }
+    
     @Override
     public UserEntity createUser(UserEntity user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        userEntityFacade.create(user); 
+        return user;
     }
 
     @Override
     public void updateUser(UserEntity userEntity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        userEntityFacade.edit(userEntity);
     }
 
     @Override
     public UserEntity findUserById(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userEntityFacade.find(userId);
     }
 
     @Override
     public UserEntity findUserByName(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return userEntityFacade.findByName(userName);
     }
     
 }

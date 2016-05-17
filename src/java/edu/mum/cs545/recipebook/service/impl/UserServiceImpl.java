@@ -5,18 +5,27 @@
  */
 package edu.mum.cs545.recipebook.service.impl;
 
+import edu.mum.cs545.recipebook.db.UserEntityFacade;
 import edu.mum.cs545.recipebook.domain.UserEntity;
-import edu.mum.cs545.recipebook.service.UserServiceProvider;
+import edu.mum.cs545.recipebook.repository.UserRepository;
+import edu.mum.cs545.recipebook.repository.impl.UserRepositoryImpl;
+import edu.mum.cs545.recipebook.service.UserService;
 
 /**
  *
  * @author user
  */
-public class UserServiceImpl implements UserServiceProvider{
+public class UserServiceImpl implements UserService{
 
+    private UserRepository userRepository;
+    
+    public UserServiceImpl(UserEntityFacade userEntityFacade){
+        this.userRepository = new UserRepositoryImpl(userEntityFacade);
+    }
+    
     @Override
     public UserEntity createUser(UserEntity user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return userRepository.createUser(user);  
     }
 
     @Override
@@ -31,7 +40,7 @@ public class UserServiceImpl implements UserServiceProvider{
 
     @Override
     public UserEntity findUserByName(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return userRepository.findUserByName(userName);
     }
     
 }

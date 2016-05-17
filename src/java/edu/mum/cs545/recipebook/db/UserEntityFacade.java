@@ -6,6 +6,7 @@
 package edu.mum.cs545.recipebook.db;
 
 import edu.mum.cs545.recipebook.domain.UserEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,8 +26,16 @@ public class UserEntityFacade extends AbstractFacade<UserEntity> {
         return em;
     }
 
-    public UserEntityFacade() {
-        super(UserEntity.class);
+    public UserEntityFacade() { 
+        super(UserEntity.class); 
     }
-    
+
+    public UserEntity findByName(String name) {
+        List<UserEntity> list = em.createQuery("SELECT u FROM UserEntity u WHERE u.userName= :userName").setParameter("userName", name).setMaxResults(1).getResultList();
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
 }
