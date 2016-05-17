@@ -18,7 +18,7 @@ public interface UserService {
      * @param user the {@link  User to create}
      * @return the created user with unique identifier set.
      */
-    public UserEntity createUser(UserEntity user);
+    public UserEntity addUser(UserEntity user);
     
     /**
      * Updates existing user.

@@ -24,33 +24,31 @@ import edu.mum.cs545.recipebook.service.impl.UserServiceImpl;
 @SessionScoped
 public class UserBean implements Serializable {
 
-     
     private UserEntity currentUser;
+
     public String getWelcomeMessage() {
 
         return "xxxxx";
     }
-  @EJB //this annotation causes the container to inject this dependency
-   private edu.mum.cs545.recipebook.db.UserEntityFacade userEntityFacade;
+    @EJB //this annotation causes the container to inject this dependency
+    private edu.mum.cs545.recipebook.db.UserEntityFacade userEntityFacade;
 
-   
     private UserService userService;
 
     @PostConstruct
     public void initialize() {
         userService = new UserServiceImpl(userEntityFacade);
-          currentUser =  userService.createUser(new UserEntity("Admin", "xx@xx.com", "password", UserRole.ADMIN));
-        userService.createUser(new UserEntity("Admin1", "xx@xx.com", "password", UserRole.ADMIN));
-      userService.createUser(new UserEntity("Admin2", "xx@xx.com", "password", UserRole.ADMIN));
-        
+        currentUser = userService.addUser(new UserEntity("Admin", "xx@xx.com", "password", UserRole.ADMIN));
+        userService.addUser(new UserEntity("Admin1", "xx@xx.com", "password", UserRole.ADMIN));
+        userService.addUser(new UserEntity("Admin2", "xx@xx.com", "password", UserRole.ADMIN));
+
         UserEntity user = userService.findUserByName("Admin2");
-        if(user != null){
-             System.out.println(user.getUserName());
+        if (user != null) {
+            System.out.println(user.getUserName());
         }
-         
     }
-    
-    public UserEntity getCurrentUser(){
+
+    public UserEntity getCurrentUser() {
         return this.currentUser;
     }
 }

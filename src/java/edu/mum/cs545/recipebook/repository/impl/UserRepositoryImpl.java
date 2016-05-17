@@ -7,6 +7,7 @@ package edu.mum.cs545.recipebook.repository.impl;
 
 import edu.mum.cs545.recipebook.db.UserEntityFacade;
 import edu.mum.cs545.recipebook.domain.UserEntity;
+import edu.mum.cs545.recipebook.domain.UserRole;
 import edu.mum.cs545.recipebook.repository.UserRepository;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -28,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
     
     @Override
-    public UserEntity createUser(UserEntity user) {
+    public UserEntity addUser(UserEntity user) {
         userEntityFacade.create(user); 
         return user;
     }

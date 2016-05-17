@@ -62,13 +62,7 @@ and open the template in the editor.
                 <div class="row"> 
                     <div class="col-md-5">
                         <h3>Instructions</h3>
-                        <ul>
-                            <ui:repeat value="#{menuBean.selectedMenuItem.In}" var="recipe">
-                                <li>
-                                    #{recipe}
-                                </li>
-                            </ui:repeat>
-                        </ul>   
+                        #{menuBean.selectedMenuItem.cookingInstruction} 
                     </div>
                 </div>
             </section>
