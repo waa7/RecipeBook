@@ -93,7 +93,7 @@ public class MenuBean implements Serializable {
 
     private MenuService menuService;
 
-    @ManagedProperty(value = "#{userBean}")
+    @Inject
     private UserBean userController;
 
     @PostConstruct
@@ -101,18 +101,18 @@ public class MenuBean implements Serializable {
         System.out.println("Initialize menu service");
         menuService = new MenuServiceImpl(menuFacade, commentFacade);
 
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
-        menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
+      //  FacesContext facesContext = FacesContext.getCurrentInstance();
+       // UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
+        menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
-        MenuItemEntity xx = menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
+        MenuItemEntity xx = menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
-        menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
+        menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
         menuItems = menuService.getCurrentMenuItems();
 
         List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
-        List<MenuItemEntity> result2 = menuService.findItemsByUser(uController.getCurrentUser());
+        List<MenuItemEntity> result2 = menuService.findItemsByUser(userController.getCurrentUser());
 
         ingredientMap = new HashMap<>();
         ingredientMap.put("Oils", Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil"));
@@ -125,44 +125,8 @@ public class MenuBean implements Serializable {
         ingredients = new DualListModel<>(sourceIngredientList, selectedIngredients);
 
     }
-
-    public UserBean getUserController() {
-        return this.userController;
-    }
-
-    public void setUserController(UserBean userController) {
-        this.userController = userController;
-    }
-
-    public List<MenuItemEntity> getMenuItems() {
-        return menuItems;
-    }
-
-    public void setMenuItems(List<MenuItemEntity> menuItems) {
-        this.menuItems = menuItems;
-    }
-
-    public MenuItemEntity getSelectedMenuItem() {
-        return selectedMenuItem;
-    }
-
-    public Long getSelectedMenuItemId() {
-        return selectedMenuItemId;
-    }
-
-    public void setSelectedMenuItemId(Long selectedMenuItemId) {
-        this.selectedMenuItemId = selectedMenuItemId;
-    }
-
-    public void selectMenuItem() {
-        for (MenuItemEntity item : menuItems) {
-            if (item.getId().equals(this.selectedMenuItemId)) {
-                selectedMenuItem = item;
-                commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
-            }
-        }
-    }
-
+    
+    
     private UploadedFile imageFile;
 
     private int ratingValue;
@@ -275,6 +239,44 @@ public class MenuBean implements Serializable {
 
     public void setMenuService(MenuService menuService) {
         this.menuService = menuService;
+    }
+
+
+    public UserBean getUserController() {
+        return this.userController;
+    }
+
+    public void setUserController(UserBean userController) {
+        this.userController = userController;
+    }
+
+    public List<MenuItemEntity> getMenuItems() {
+        return menuItems;
+    }
+
+    public void setMenuItems(List<MenuItemEntity> menuItems) {
+        this.menuItems = menuItems;
+    }
+
+    public MenuItemEntity getSelectedMenuItem() {
+        return selectedMenuItem;
+    }
+
+    public Long getSelectedMenuItemId() {
+        return selectedMenuItemId;
+    }
+
+    public void setSelectedMenuItemId(Long selectedMenuItemId) {
+        this.selectedMenuItemId = selectedMenuItemId;
+    }
+
+    public void selectMenuItem() {
+        for (MenuItemEntity item : menuItems) {
+            if (item.getId().equals(this.selectedMenuItemId)) {
+                selectedMenuItem = item;
+                commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
+            }
+        }
     }
 
     public void addComment() {
