@@ -102,31 +102,20 @@ public class MenuBean implements Serializable {
         System.out.println("Initialize menu service");
         menuService = new MenuServiceImpl(menuFacade, commentFacade);
 
-        //  FacesContext facesContext = FacesContext.getCurrentInstance();
-        // UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
-        menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
-
-        MenuItemEntity xx = menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
-
-        menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
-
-        //    List<MenuItemEntity> demoEntity = DemoDataLoader.getDemoMenuEntity();
-        //   for(MenuItemEntity item : demoEntity){
-        //     item =  menuService.addNewMenu(item);
-        //   }
-        menuItems = menuService.getCurrentMenuItems();
-
-        List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
-        List<MenuItemEntity> result2 = menuService.findItemsByUser(userController.getCurrentUser());
-
-        ingredientMap = new HashMap<>();
-        ingredientMap.put("Oils", Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil"));
-        ingredientMap.put("Grains and Legumes", Arrays.asList("Couscous", "Dried lentils", "Beaan", "Oats", "Barely", "Millet", "Rice", "Berries"));
-        ingredientMap.put("Spices", Arrays.asList("salt", "mustard", "Red pepper", "Black pepper", "Bay leaves", "Cloves"));
-
+        List<MenuItemEntity> demoList = DemoDataLoader.getDemoMenuEntity();
+        for (MenuItemEntity item : demoList) {
+            item = menuService.addNewMenu(item); 
+        }
+         menuItems = menuService.getCurrentMenuItems(); 
+         for (MenuItemEntity item : menuItems) { 
+            List<CommentEntity> commentEntities = DemoDataLoader.getDemoComment(item); 
+            for(CommentEntity comment: commentEntities){
+                menuService.addNewComment(comment);
+            }
+        }
+       
         sourceIngredientList = Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil", "Couscous", "Dried lentils", "Beaan", "Oats", "Barely", "Millet", "Rice", "Berries", "salt", "mustard", "Red pepper", "Black pepper", "Bay leaves", "Cloves");
-        selectedIngredients = new ArrayList<>();
-
+        selectedIngredients = new ArrayList<>(); 
         ingredients = new DualListModel<>(sourceIngredientList, selectedIngredients);
 
     }
@@ -390,8 +379,8 @@ public class MenuBean implements Serializable {
         System.out.println("Search called");
         if (searchString == null || searchString.isEmpty()) {
             menuItems = menuService.getCurrentMenuItems();
-        } else { 
+        } else {
             menuItems = menuService.findItemsByTitle(searchString);
-        } 
+        }
     }
 }
