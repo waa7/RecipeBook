@@ -63,9 +63,9 @@ public class UserBean implements Serializable {
 
     @PostConstruct
     public void initialize() {
-        userService = new UserServiceImpl(userEntityFacade);
-        //currentUser = 
-        userService.addUser(new UserEntity("t", "xx@xx.com", "t", UserRole.ADMIN));
+        userService = new UserServiceImpl(userEntityFacade); 
+        
+        currentUser = userService.addUser(new UserEntity("Admin", "xx@xx.com", "password", UserRole.ADMIN));
         userService.addUser(new UserEntity("Admin1", "xx@xx.com", "password", UserRole.ADMIN));
         userService.addUser(new UserEntity("Admin2", "xx@xx.com", "password", UserRole.ADMIN));
 

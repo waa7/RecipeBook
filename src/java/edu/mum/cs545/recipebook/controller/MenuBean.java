@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template imageFile, choose Tools | Templates
  * and open the template in the editor.
  */
 package edu.mum.cs545.recipebook.controller;
@@ -22,13 +22,29 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import edu.mum.cs545.recipebook.service.MenuService;
 import edu.mum.cs545.recipebook.service.impl.MenuServiceImpl;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.ServletContext;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.event.RateEvent;
+import org.primefaces.model.DualListModel;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -39,12 +55,12 @@ import org.primefaces.event.RateEvent;
 public class MenuBean implements Serializable {
 
     public String getTestString() {
-                return "index";
+        return "index";
     }
     private List<MenuItemEntity> menuItems;
 
     private Long selectedMenuItemId;
-    
+
     private MenuItemEntity selectedMenuItem;
 
     private MenuItemEntity newMenu;
@@ -55,9 +71,9 @@ public class MenuBean implements Serializable {
 
     private String description;
 
-    private String menuType;
+    private int menuType;
 
-    private String category;
+    private int category;
 
     private List<String> recipes;
 
@@ -84,19 +100,30 @@ public class MenuBean implements Serializable {
     public void initialize() {
         System.out.println("Initialize menu service");
         menuService = new MenuServiceImpl(menuFacade, commentFacade);
-        
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);  
+        UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
         menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
-   
-       MenuItemEntity xx= menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
+
+        MenuItemEntity xx = menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
 
         menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
- 
-        menuItems= menuService.getCurrentMenuItems();
-       
+
+        menuItems = menuService.getCurrentMenuItems();
+
         List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
         List<MenuItemEntity> result2 = menuService.findItemsByUser(uController.getCurrentUser());
+
+        ingredientMap = new HashMap<>();
+        ingredientMap.put("Oils", Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil"));
+        ingredientMap.put("Grains and Legumes", Arrays.asList("Couscous", "Dried lentils", "Beaan", "Oats", "Barely", "Millet", "Rice", "Berries"));
+        ingredientMap.put("Spices", Arrays.asList("salt", "mustard", "Red pepper", "Black pepper", "Bay leaves", "Cloves"));
+
+        sourceIngredientList = Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil", "Couscous", "Dried lentils", "Beaan", "Oats", "Barely", "Millet", "Rice", "Berries", "salt", "mustard", "Red pepper", "Black pepper", "Bay leaves", "Cloves");
+        selectedIngredients = new ArrayList<>();
+
+        ingredients = new DualListModel<>(sourceIngredientList, selectedIngredients);
+
     }
 
     public UserBean getUserController() {
@@ -105,8 +132,8 @@ public class MenuBean implements Serializable {
 
     public void setUserController(UserBean userController) {
         this.userController = userController;
-    } 
-    
+    }
+
     public List<MenuItemEntity> getMenuItems() {
         return menuItems;
     }
@@ -118,33 +145,41 @@ public class MenuBean implements Serializable {
     public MenuItemEntity getSelectedMenuItem() {
         return selectedMenuItem;
     }
- 
-        public Long getSelectedMenuItemId() {
+
+    public Long getSelectedMenuItemId() {
         return selectedMenuItemId;
     }
 
     public void setSelectedMenuItemId(Long selectedMenuItemId) {
         this.selectedMenuItemId = selectedMenuItemId;
     }
-    
-    public void selectMenuItem(){
-        for(MenuItemEntity item: menuItems){
-            if(item.getId().equals(this.selectedMenuItemId)){
+
+    public void selectMenuItem() {
+        for (MenuItemEntity item : menuItems) {
+            if (item.getId().equals(this.selectedMenuItemId)) {
                 selectedMenuItem = item;
                 commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
             }
         }
     }
-    
-    
-    
+
+    private UploadedFile imageFile;
+
     private int ratingValue;
-     
+
     private String newComment;
-    
+
     private String newCommentName;
-    
+
     private List<CommentEntity> commentsForSelectedMenuItem;
+
+    private DualListModel<String> ingredients;
+
+    private Map<String, List<String>> ingredientMap;
+
+    private List<String> sourceIngredientList;
+
+    private List<String> selectedIngredients;
 
     public int getRatingValue() {
         return ratingValue;
@@ -153,15 +188,15 @@ public class MenuBean implements Serializable {
     public void setRatingValue(int ratingValue) {
         this.ratingValue = ratingValue;
     }
-    
-    public void onRate(RateEvent event){
-        menuService.updateAvarageRating(selectedMenuItem, (Integer) event.getRating()); 
+
+    public void onRate(RateEvent event) {
+        menuService.updateAvarageRating(selectedMenuItem, (Integer) event.getRating());
     }
-    
-    public void onCancel(AjaxBehaviorEvent event){
-        
+
+    public void onCancel(AjaxBehaviorEvent event) {
+
     }
-     
+
     public String getNewComment() {
         return newComment;
     }
@@ -185,13 +220,69 @@ public class MenuBean implements Serializable {
     public void setCommentsForSelectedMenuItem(List<CommentEntity> commentsForSelectedMenuItem) {
         this.commentsForSelectedMenuItem = commentsForSelectedMenuItem;
     }
-    
-    public void addComment(){
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(int menuType) {
+        this.menuType = menuType;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public List<String> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<String> recipes) {
+        this.recipes = recipes;
+    }
+
+    public String getCookingInstruction() {
+        return cookingInstruction;
+    }
+
+    public void setCookingInstruction(String cookingInstruction) {
+        this.cookingInstruction = cookingInstruction;
+    }
+
+    public MenuService getMenuService() {
+        return menuService;
+    }
+
+    public void setMenuService(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
+    public void addComment() {
         System.out.println("Add comment called");
-        if(newCommentName == null || newCommentName.isEmpty()){
+        if (newCommentName == null || newCommentName.isEmpty()) {
             newCommentName = "Anonymous";
         }
-        menuService.addNewComment(new CommentEntity(selectedMenuItem, newCommentName , LocalDate.now(), newComment));
+        menuService.addNewComment(new CommentEntity(selectedMenuItem, newCommentName, LocalDate.now(), newComment));
         commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
         newComment = "";
         newCommentName = "";
@@ -200,5 +291,83 @@ public class MenuBean implements Serializable {
 
     public int getAverageRating() {
         return Math.round(selectedMenuItem.getAverageRating());
-    } 
+    }
+
+    public DualListModel<String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(DualListModel<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public UploadedFile getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(UploadedFile file) {
+        this.imageFile = file;
+    }
+
+    public void saveImageFile(String fileName) {
+        if (imageFile == null) {
+            return;
+        }
+        try {
+
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            InputStream input = imageFile.getInputstream();
+            String newFileName = servletContext.getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator + fileName;
+            File file = new File(newFileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream output = new FileOutputStream(file, false);
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MenuBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+        }
+    }
+
+    public void addNewMenu(AjaxBehaviorEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
+
+        UserEntity userEntity = uController.getCurrentUser();
+        MenuItemStatus status = MenuItemStatus.CURRENT;
+        if (userEntity.getUserRole() != UserRole.ADMIN) {
+            status = MenuItemStatus.SUGGESTED;
+        }
+        MenuItemEntity newMenu = new MenuItemEntity(this.title, this.description, MenuType.values()[this.menuType], Category.values()[this.category],
+                this.selectedIngredients, this.cookingInstruction, uController.getCurrentUser(), status);
+        newMenu = menuService.addNewMenu(newMenu);
+
+        if (newMenu != null) {
+            Long id = newMenu.getId();
+
+            if (imageFile != null) {
+                saveImageFile("menuItem_" + String.valueOf(id) + ".jpg");
+            }
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Menu Added", "You have successfully added the new menu");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            menuItems = menuService.findItemsByUser(userEntity);
+
+            title = "";
+            description = "";
+            cookingInstruction = "";
+            imageFile = null;
+
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error in adding new menu", "An error occured while trying to add the menu");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
 }
