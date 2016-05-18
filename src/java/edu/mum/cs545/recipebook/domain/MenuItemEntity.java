@@ -8,6 +8,7 @@ package edu.mum.cs545.recipebook.domain;
 import java.io.Serializable; 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class MenuItemEntity implements Serializable {
     
     private String title;
     
+    @Column(length=1000)  
     private String description; 
     
     private MenuType menuType;
@@ -36,7 +38,8 @@ public class MenuItemEntity implements Serializable {
     private Category category;
     
     private List<String> recipes;
-    
+     
+    @Column(length=10000)
     private String cookingInstruction;
     
     private float averageRating;
@@ -44,9 +47,6 @@ public class MenuItemEntity implements Serializable {
     private int numberOfRatings;
     
      private MenuItemStatus status;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menuItemEntity")
-    private List<CommentEntity> comments;
     
     @ManyToOne(optional=false) 
     private UserEntity createdBy; 
@@ -138,15 +138,7 @@ public class MenuItemEntity implements Serializable {
     public void setNumberOfRatings(int numberOfRatings) {
         this.numberOfRatings = numberOfRatings;
     }
-
-    public List<CommentEntity> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentEntity> comments) {
-        this.comments = comments;
-    }
-
+  
     public UserEntity getCreatedBy() {
         return createdBy;
     }

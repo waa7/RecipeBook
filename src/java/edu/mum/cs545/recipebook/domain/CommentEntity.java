@@ -7,6 +7,7 @@ package edu.mum.cs545.recipebook.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,7 @@ public class CommentEntity implements Serializable {
     
     private LocalDate commentDate;
     
+     @Column(length=10000)
     private String comment;
 
     public CommentEntity() {

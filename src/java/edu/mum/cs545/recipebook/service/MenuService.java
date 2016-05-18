@@ -85,4 +85,6 @@ public interface MenuService {
      * @param newRating the new rating value.
      */
     public void updateAvarageRating(MenuItemEntity menuItemEntity, int newRating);
+    
+    public List<CommentEntity> getComments(MenuItemEntity menuItem);
 }

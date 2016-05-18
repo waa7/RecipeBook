@@ -89,12 +89,12 @@ public class MenuBean implements Serializable {
         UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);  
         menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
    
-        menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
+       MenuItemEntity xx= menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
 
         menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", uController.getCurrentUser(), MenuItemStatus.CURRENT));
  
         menuItems= menuService.getCurrentMenuItems();
-        
+       
         List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
         List<MenuItemEntity> result2 = menuService.findItemsByUser(uController.getCurrentUser());
     }
@@ -131,6 +131,7 @@ public class MenuBean implements Serializable {
         for(MenuItemEntity item: menuItems){
             if(item.getId().equals(this.selectedMenuItemId)){
                 selectedMenuItem = item;
+                commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
             }
         }
     }
@@ -142,6 +143,8 @@ public class MenuBean implements Serializable {
     private String newComment;
     
     private String newCommentName;
+    
+    private List<CommentEntity> commentsForSelectedMenuItem;
 
     public int getRatingValue() {
         return ratingValue;
@@ -174,6 +177,14 @@ public class MenuBean implements Serializable {
     public void setNewCommentName(String newCommentName) {
         this.newCommentName = newCommentName;
     }
+
+    public List<CommentEntity> getCommentsForSelectedMenuItem() {
+        return commentsForSelectedMenuItem;
+    }
+
+    public void setCommentsForSelectedMenuItem(List<CommentEntity> commentsForSelectedMenuItem) {
+        this.commentsForSelectedMenuItem = commentsForSelectedMenuItem;
+    }
     
     public void addComment(){
         System.out.println("Add comment called");
@@ -181,7 +192,10 @@ public class MenuBean implements Serializable {
             newCommentName = "Anonymous";
         }
         menuService.addNewComment(new CommentEntity(selectedMenuItem, newCommentName , LocalDate.now(), newComment));
-        
+        commentsForSelectedMenuItem = menuService.getComments(selectedMenuItem);
+        newComment = "";
+        newCommentName = "";
+        ratingValue = 0;
     }
 
     public int getAverageRating() {

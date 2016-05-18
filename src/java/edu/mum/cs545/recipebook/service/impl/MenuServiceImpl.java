@@ -81,4 +81,8 @@ public class MenuServiceImpl implements MenuService {
         menuRepository.updateMenuItem(menuItemEntity);
     }
 
+    @Override
+    public List<CommentEntity> getComments(MenuItemEntity menuItem){
+        return menuRepository.getComments(menuItem);
+    }
 }

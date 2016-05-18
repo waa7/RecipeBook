@@ -24,9 +24,8 @@ and open the template in the editor.
             <f:viewParam name="selectedMenuItemId" value="#{menuBean.selectedMenuItemId}" /> 
             <f:viewAction action="#{menuBean.selectMenuItem}"/>
         </f:metadata>
-
+        
         <h:body>
-
             <h:form> 
                 <section>
                     <div class="jumbotron">
@@ -46,7 +45,12 @@ and open the template in the editor.
                         <div class="col-md-5">
                             <h3>#{menuBean.selectedMenuItem.title}</h3>
                             <p>#{menuBean.selectedMenuItem.description}</p> 
-                            <p><p:rating id="avRating"  value="#{menuBean.averageRating}" stars="10" readonly="true" /></p>
+                            <p>
+                                <p:outputPanel id="ratingPanel"> 
+                                        <p:rating id="avRating"  value="#{menuBean.averageRating}" stars="10" readonly="true"/> 
+                                        ( <h:outputText value="#{menuBean.selectedMenuItem.numberOfRatings}"/> )
+                                </p:outputPanel>
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -72,47 +76,56 @@ and open the template in the editor.
                         </div>
                     </div>
                 </section>
+
                 <section class="container">
                     <div class="row"> 
                         <div class="col-md-5"> 
                             <br/>
                             <h3>Rate this menu:</h3>
                             <p:rating value="#{menuBean.ratingValue}"  stars="10" >
-                                <p:ajax event="rate" listener="#{menuBean.onRate}" update="avRating" />
+                                <p:ajax event="rate" listener="#{menuBean.onRate}" update="ratingPanel" />
                             </p:rating>
-                            <br/>
-                            <div id="comment_container">
+                            <br/> 
+                        </div>
+                    </div>
+                </section>
+                <section class="container"> 
+                    <div  class="row"> 
+                        <div class="col-md-5"> 
+                            <div id="comment_container"> 
                                 <h3>Leave us your comment here</h3>  
                                 <p:inputTextarea id="comment" rows="5" cols="60" value="#{menuBean.newComment}" placeholder="Your comment"/>
                                 <br/><br/> <p:inputText id="name" value="#{menuBean.newCommentName}" placeholder="Display name"/>
                                 <br/><br/>
-                                <h:button value="Submit"> 
-                                    <f:ajax event="click" execute="@form" listener="#{menuBean.addComment}" render="comment_list"/>
-                                </h:button>
-                                <p:button value="submit">
-                                     <p:ajax event="click" listener="#{menuBean.addComment}" update="comment_list" />
-                                </p:button>
+                                <h:commandButton value="Submit"> 
+                                    <f:ajax event='click'  execute='@form' render='@form' listener="#{menuBean.addComment}"/> 
+                                </h:commandButton>   
                             </div> 
                         </div>
                     </div>
                 </section>
                 <section class="container"> 
-                    <p:blockUI id="comment_list">
-                        <div  class="row"> 
+                    <div  class="row"> 
                         <div class="col-md-5"> 
-                            <ul>
-                                <ui:repeat value="#{menuBean.selectedMenuItem.comments}" var="comment">
+                            <ul id="comment_list" style="list-style: none;">
+                                <ui:repeat value="#{menuBean.commentsForSelectedMenuItem}" var="comment">
                                     <li>
-                                         #{comment.comment}
+                                        <br/>
+                                        <h:graphicImage value="resources/images/critic.gif" alt="image"/> 
+                                        <h:outputText value="#{comment.createdBy} " />
+                                        <h:outputText value="#{comment.commentDate} " />
+                                        <br/>
+                                        <q style="margin-left: 40px; font-style: italic">
+                                            #{comment.comment}
+                                        </q>
+                                        <br/>
                                     </li>
                                 </ui:repeat>
                             </ul> 
                         </div>
                     </div>
-                    </p:blockUI>
-                    
-                </section>
-
+                    <br/><br/>
+                </section> 
             </h:form> 
         </h:body>
 

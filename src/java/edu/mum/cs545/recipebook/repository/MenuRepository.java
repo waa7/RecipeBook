@@ -65,6 +65,7 @@ public interface MenuRepository {
      */
     public List<MenuItemEntity> findItemsByStatus(MenuItemStatus status);
     
+    public List<CommentEntity> getComments(MenuItemEntity menuItem);
         /**
      * Creates a new comment.
      *

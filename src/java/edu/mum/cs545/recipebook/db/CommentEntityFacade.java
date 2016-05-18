@@ -6,6 +6,9 @@
 package edu.mum.cs545.recipebook.db;
 
 import edu.mum.cs545.recipebook.domain.CommentEntity;
+import edu.mum.cs545.recipebook.domain.MenuItemEntity;
+import edu.mum.cs545.recipebook.domain.UserEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +20,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class CommentEntityFacade extends AbstractFacade<CommentEntity> {
 
+    private final static int MAX_SEARCH_RESULT = 1000;
     @PersistenceContext(unitName = "AnnapurnaRecipeBookPU")
     private EntityManager em;
 
@@ -28,5 +32,9 @@ public class CommentEntityFacade extends AbstractFacade<CommentEntity> {
     public CommentEntityFacade() {
         super(CommentEntity.class);
     }
-    
+
+    public List<CommentEntity> findCommentsByMenuItem(MenuItemEntity menuItemEntity) {
+        return em.createQuery("SELECT c FROM CommentEntity c WHERE c.menuItemEntity = :menuItemEntity").setParameter("menuItemEntity", menuItemEntity).setMaxResults(MAX_SEARCH_RESULT).getResultList();
+    }
+
 }

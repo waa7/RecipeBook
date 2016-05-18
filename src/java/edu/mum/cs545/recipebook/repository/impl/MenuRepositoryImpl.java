@@ -70,5 +70,9 @@ public class MenuRepositoryImpl implements MenuRepository{
     public void deleteComment(Long commentId) {
         commentFacade.remove(commentFacade.find(commentId));
     }
-    
+
+    @Override
+    public List<CommentEntity> getComments(MenuItemEntity menuItem) {
+        return commentFacade.findCommentsByMenuItem(menuItem);
+    } 
 }
