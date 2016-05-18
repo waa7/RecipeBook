@@ -5,7 +5,7 @@
  */
 
 
-$(document).ready(function () {
-   // $("#comment_container")
-  
-});
+window.onload = function(){
+    
+    document.f
+}

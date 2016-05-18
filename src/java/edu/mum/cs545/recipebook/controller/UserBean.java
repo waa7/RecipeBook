@@ -25,6 +25,12 @@ import edu.mum.cs545.recipebook.service.impl.UserServiceImpl;
 public class UserBean implements Serializable {
 
     private UserEntity currentUser;
+    private boolean loggedIn;
+
+    public boolean isAuthered() {
+        return loggedIn;
+    }
+    
 
     public String getWelcomeMessage() {
 
@@ -34,11 +40,32 @@ public class UserBean implements Serializable {
     private edu.mum.cs545.recipebook.db.UserEntityFacade userEntityFacade;
 
     private UserService userService;
+    private String loginUserName;
+    private String loginUserPas;
+
+    public String getLoginUserName() {
+        return loginUserName;
+    }
+
+    public void setLoginUserName(String loginUserName) {
+        this.loginUserName = loginUserName;
+    }
+
+    public String getLoginUserPas() {
+        return loginUserPas;
+    }
+
+    public void setLoginUserPas(String loginUserPas) {
+        this.loginUserPas = loginUserPas;
+    }
+
+    
 
     @PostConstruct
     public void initialize() {
         userService = new UserServiceImpl(userEntityFacade);
-        currentUser = userService.addUser(new UserEntity("Admin", "xx@xx.com", "password", UserRole.ADMIN));
+        //currentUser = 
+        userService.addUser(new UserEntity("t", "xx@xx.com", "t", UserRole.ADMIN));
         userService.addUser(new UserEntity("Admin1", "xx@xx.com", "password", UserRole.ADMIN));
         userService.addUser(new UserEntity("Admin2", "xx@xx.com", "password", UserRole.ADMIN));
 
@@ -50,5 +77,25 @@ public class UserBean implements Serializable {
 
     public UserEntity getCurrentUser() {
         return this.currentUser;
+    }
+    
+    public String loginAction() {
+        UserEntity user = userService.findUserByName(loginUserName);
+        if(user==null || loginUserPas==null)
+        {
+            loggedIn = true;
+            return "";
+        }
+        if(user.getPassword().equals(loginUserPas))
+        {
+            loggedIn = false;
+            currentUser = user;
+            return "";
+        }
+        else
+        {
+            loggedIn = true;
+            return "";
+        }
     }
 }
