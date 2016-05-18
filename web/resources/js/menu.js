@@ -6,6 +6,5 @@
 
 
 window.onload = function(){
-    
-    document.f
+   
 }
