@@ -15,6 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import edu.mum.cs545.recipebook.service.UserService;
 import edu.mum.cs545.recipebook.service.impl.UserServiceImpl;
+import edu.mum.cs545.recipebook.utils.Utils;
 
 /**
  *
@@ -31,7 +32,17 @@ public class UserBean implements Serializable {
         return loggedIn;
     }
     
-
+    public boolean isAdmin(){
+        if(!loggedIn){
+            return false;
+        }
+        return currentUser.getUserRole().equals(UserRole.ADMIN);
+    }
+    
+    public boolean isLoggedIn(){
+        return loggedIn;
+    }
+     
     public String getWelcomeMessage() {
 
         return "xxxxx";
@@ -57,45 +68,54 @@ public class UserBean implements Serializable {
 
     public void setLoginUserPas(String loginUserPas) {
         this.loginUserPas = loginUserPas;
-    }
-
-    
+    } 
 
     @PostConstruct
     public void initialize() {
         userService = new UserServiceImpl(userEntityFacade); 
         
-        currentUser = userService.addUser(new UserEntity("Admin", "xx@xx.com", "password", UserRole.ADMIN));
-        userService.addUser(new UserEntity("Admin1", "xx@xx.com", "password", UserRole.ADMIN));
-        userService.addUser(new UserEntity("Admin2", "xx@xx.com", "password", UserRole.ADMIN));
+        currentUser = userService.addUser(new UserEntity("admin", "xx@xx.com",Utils.getHash("password"), UserRole.ADMIN));
+        userService.addUser(new UserEntity("Admin1", "xx@xx.com", Utils.getHash("password"), UserRole.ADMIN));
+        userService.addUser(new UserEntity("Admin2", "xx@xx.com", Utils.getHash("password"), UserRole.ADMIN));
 
         UserEntity user = userService.findUserByName("Admin2");
         if (user != null) {
             System.out.println(user.getUserName());
         }
+        loggedIn = true;
     }
 
     public UserEntity getCurrentUser() {
         return this.currentUser;
     }
-    
+    private String error = null;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+     
     public String loginAction() {
         UserEntity user = userService.findUserByName(loginUserName);
-        if(user==null || loginUserPas==null)
-        {
-            loggedIn = true;
-            return "";
-        }
-        if(user.getPassword().equals(loginUserPas))
-        {
-            loggedIn = false;
+        
+        if(user != null && user.getPassword().equals(Utils.getHash(loginUserPas))){
+             loggedIn = true;
+            error = "";
             currentUser = user;
+            return "index?faces-redirect=true";
+        }else{
+              loggedIn = false;
+            error = "Invalid user name or password"; 
             return "";
-        }
-        else
-        {
-            loggedIn = true;
-            return "";
-        }
+        } 
+    }
+    
+    public String logOut(){
+       // currentUser = null;
+        loggedIn = false;
+        return "index";
     }
 }

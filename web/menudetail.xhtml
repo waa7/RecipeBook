@@ -24,20 +24,33 @@ and open the template in the editor.
             <f:viewParam name="selectedMenuItemId" value="#{menuBean.selectedMenuItemId}" /> 
             <f:viewAction action="#{menuBean.selectMenuItem}"/>
         </f:metadata>
-        
+
         <h:body>
-            <h:form> 
+           
                 <section>
-                    <div class="jumbotron">
-                        <div class="container">
-                            <h1>Menu Details</h1>
-                        </div>
-                    </div>
+                    <div id="banner" class="jumbotron">
+                        <div id="title" class="container">
+                            <h1>Add new menu</h1> 
+                        </div>  
+                    </div> 
                 </section>
-                <section class="container">
-                    <p>
-                        <h:link value="back" outcome="index" class="btn btn-default glyphicon-hand-left glyphicon" />
-                    </p>
+                <section>
+                    <nav class="navbar navbar-inverse">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand" href="#">Annapurna Cook Book</a>
+                            </div>
+                            <ul class="nav navbar-nav">
+                                <li><h:link outcome="index" value="Home"/></li>
+                                <li><h:link outcome="addMenu" value="Add New Menu" rendered="#{userBean.admin}"/></li>
+                                <li><h:link outcome="login" value="Login" rendered="#{!userBean.loggedIn}"/></li> 
+                                <li><h:form class="logout_link"><h:commandLink  action="#{userBean.logOut}" value="Logout" rendered="#{userBean.loggedIn}"/></h:form></li>  
+                            </ul>
+                        </div>
+                    </nav>
+                </section>
+             <h:form> 
+                <section class="container"> 
                     <div class="row" >
                         <div class="col-md-5">
                             <h:graphicImage value="resources/images/menuItem_#{menuBean.selectedMenuItem.id}.jpg" alt="image" style = "width:100%"/> 
@@ -47,8 +60,8 @@ and open the template in the editor.
                             <p>#{menuBean.selectedMenuItem.description}</p> 
                             <p>
                                 <p:outputPanel id="ratingPanel"> 
-                                        <p:rating id="avRating"  value="#{menuBean.averageRating}" stars="10" readonly="true"/> 
-                                        ( <h:outputText value="#{menuBean.selectedMenuItem.numberOfRatings}"/> )
+                                    <p:rating id="avRating"  value="#{menuBean.averageRating}" stars="10" readonly="true"/> 
+                                    ( <h:outputText value="#{menuBean.selectedMenuItem.numberOfRatings}"/> )
                                 </p:outputPanel>
                             </p>
                         </div>
@@ -80,11 +93,11 @@ and open the template in the editor.
                 <section class="container">
                     <div class="row"> 
                         <div class="col-md-5"> 
-                            <br/>
+                            <br/> 
                             <h3>Rate this menu:</h3>
-                            <p:rating value="#{menuBean.ratingValue}"  stars="10" >
-                                <p:ajax event="rate" listener="#{menuBean.onRate}" update="ratingPanel" />
-                            </p:rating>
+                                <p:rating value="#{menuBean.ratingValue}"  stars="10" >
+                                    <p:ajax  event="rate" listener="#{menuBean.onRate}" update="ratingPanel" />
+                                </p:rating>   
                             <br/> 
                         </div>
                     </div>

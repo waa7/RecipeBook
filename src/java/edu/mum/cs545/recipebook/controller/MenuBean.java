@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
@@ -101,22 +102,20 @@ public class MenuBean implements Serializable {
         System.out.println("Initialize menu service");
         menuService = new MenuServiceImpl(menuFacade, commentFacade);
 
-      //  FacesContext facesContext = FacesContext.getCurrentInstance();
-       // UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
+        //  FacesContext facesContext = FacesContext.getCurrentInstance();
+        // UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
         menuService.addNewMenu(new MenuItemEntity("Pasta", "Nice italian pasta", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("pasta", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
         MenuItemEntity xx = menuService.addNewMenu(new MenuItemEntity("Rice with nothing", "Nice boiled rice", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("rice", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
         menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
-        
-        List<MenuItemEntity> demoEntity = DemoDataLoader.getDemoMenuEntity();
-        for(MenuItemEntity item : demoEntity){
-           item =  menuService.addNewMenu(item);
-        }
+        //    List<MenuItemEntity> demoEntity = DemoDataLoader.getDemoMenuEntity();
+        //   for(MenuItemEntity item : demoEntity){
+        //     item =  menuService.addNewMenu(item);
+        //   }
         menuItems = menuService.getCurrentMenuItems();
- 
- 
+
         List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
         List<MenuItemEntity> result2 = menuService.findItemsByUser(userController.getCurrentUser());
 
@@ -131,8 +130,7 @@ public class MenuBean implements Serializable {
         ingredients = new DualListModel<>(sourceIngredientList, selectedIngredients);
 
     }
-    
-    
+
     private UploadedFile imageFile;
 
     private int ratingValue;
@@ -150,6 +148,8 @@ public class MenuBean implements Serializable {
     private List<String> sourceIngredientList;
 
     private List<String> selectedIngredients;
+
+    private String searchString;
 
     public int getRatingValue() {
         return ratingValue;
@@ -247,7 +247,6 @@ public class MenuBean implements Serializable {
         this.menuService = menuService;
     }
 
-
     public UserBean getUserController() {
         return this.userController;
     }
@@ -274,6 +273,14 @@ public class MenuBean implements Serializable {
 
     public void setSelectedMenuItemId(Long selectedMenuItemId) {
         this.selectedMenuItemId = selectedMenuItemId;
+    }
+
+    public String getSearchString() {
+        return searchString;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
     public void selectMenuItem() {
@@ -377,5 +384,14 @@ public class MenuBean implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error in adding new menu", "An error occured while trying to add the menu");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
+    }
+
+    public void searchMenus(AjaxBehaviorEvent event) {
+        System.out.println("Search called");
+        if (searchString == null || searchString.isEmpty()) {
+            menuItems = menuService.getCurrentMenuItems();
+        } else { 
+            menuItems = menuService.findItemsByTitle(searchString);
+        } 
     }
 }

@@ -18,15 +18,30 @@ and open the template in the editor.
         <title>Products</title>
     </h:head>
     <h:body>
-
         <section>
-            <div class="jumbotron">
-                <div class="container">
-                    <h1>Add New Menu</h1> 
-                </div>
-            </div>
+            <div id="banner" class="jumbotron">
+                <div id="title" class="container">
+                    <h1>Add new menu</h1> 
+                </div>  
+            </div> 
         </section>
+        <section>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Annapurna Cook Book</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="index" value="Home"/></li>
+                        <li class="active"><h:link outcome="addMenu" value="Add New Menu" rendered="#{userBean.admin}"/></li>
+                        <li><h:link outcome="login" value="Login" rendered="#{!userBean.loggedIn}"/></li> 
+                        <li><h:form class="logout_link"><h:commandLink  action="#{userBean.logOut}" value="Logout" rendered="#{userBean.loggedIn}"/></h:form></li>  
+                    </ul>
+                </div> 
+            </nav>
 
+
+        </section>
         <h:form class="container" enctype="multipart/form-data">
             <p:growl id="messages" showDetail="true" />
             <div class="row"> 
@@ -49,9 +64,9 @@ and open the template in the editor.
                     <f:selectItem itemLabel="Drink" itemValue="4" />   
                 </p:selectOneMenu>  <br/><br/> 
                 <p:inputTextarea cols="50" rows="10" placeholder="Cooking instructions" value="#{menuBean.cookingInstruction}"/><br/><br/>
-               
+
                 <p:fileUpload value="#{menuBean.imageFile}" mode="simple" allowTypes="*.jpg" label="Choose image file"/> <br/><br/>
-                
+
                 <h:commandButton value="Submit"> 
                     <f:ajax event='click'  execute='@form' render='@form' listener="#{menuBean.addNewMenu}"/> 
                 </h:commandButton> <br/><br/>

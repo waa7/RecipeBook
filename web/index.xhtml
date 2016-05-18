@@ -3,24 +3,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
         <link rel="stylesheet"
               href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
         <h:outputStylesheet library="css" name="menu.css"  />
-        <title>Products</title>
+        <title>Annapurna cook book</title>
     </h:head>
-    <h:body>
+    <h:body>  
         <section>
-            <div class="jumbotron">
-                <div class="container">
+            <div id="banner" class="jumbotron">
+                <div id="title" class="container">
                     <h1>Current Menus</h1> 
-                </div>
-            </div>
+                </div>  
+            </div> 
         </section>
-
-        <h:form class="container">
+        <section>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Annapurna Cook Book</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><h:link outcome="index" value="Home"/></li>
+                        <li><h:link outcome="addMenu" value="Add New Menu" rendered="#{userBean.admin}"/></li>
+                        <li><h:link outcome="login" value="Login" rendered="#{!userBean.loggedIn}"/></li> 
+                        <li><h:form class="logout_link"><h:commandLink  action="#{userBean.logOut}" value="Logout" rendered="#{userBean.loggedIn}"/></h:form></li>  
+                    </ul>
+                </div>
+                <div id="div_search_container" class="col-sm-3 col-md-3 navbar-right" >
+                    <h:form class="navbar-form" role="search">
+                        <div class="input-group"> 
+                            <h:inputText id="inputField" value="#{menuBean.searchString}" a:placeholder="Search"  onkeypress="if (event.keyCode == 13) {event.target.blur();event.stopPropagation();return false;} else {return true;};">
+                                <f:ajax render="result_container" execute="inputField" event="change" listener="#{menuBean.searchMenus}"/> 
+                            </h:inputText> 
+                        </div>
+                    </h:form>
+                </div>
+            </nav>
+        </section>
+        <h:form id="result_container" class="container"> 
             <div class="row">
                 <c:forEach items="#{menuBean.menuItems}" var="item"> 
                     <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
@@ -39,8 +64,7 @@
                     </div>
 
                 </c:forEach>
-            </div>
-            <h:commandButton value="addMenu" action="addMenu"/>
+            </div> 
         </h:form>
     </h:body>
 </html>

@@ -1,34 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-   <head><title>IGNORED</title></head>
-   <body>
-      <ui:composition template="/templates/masterLayout.xhtml">
-         <ui:define name="windowTitle">
-            Welcome #{userBean.loginUserName}
-         </ui:define>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-         <ui:define name="heading">
-            <ui:include src="/sections/login/header.xhtml"/>
-         </ui:define>
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+        <link rel="stylesheet"
+              href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="menu.css"  />
+        <title>Login</title>
+    </h:head> 
 
-         <ui:define name="content">
-            <h:form>
-               <h:panelGrid columns="2">
-                  UserName:
-                  <h:inputText id="name" value="#{userBean.loginUserName}"/>
-                  Password:
-                  <h:inputSecret id="password" value="#{userBean.loginUserPas}"/>
-                  <h:outputText id="mes" rendered="#{userBean.authered}" value="*User or Password not correct" style="color:red"></h:outputText>
-               </h:panelGrid>
-               <p>
-                  <h:commandButton value="Login"
-                                   action="#{userBean.loginAction}"/>
-               </p>
-            </h:form>
-         </ui:define>
-      </ui:composition>
-   </body>
+    <h:body>  
+        <section>
+            <div id="banner" class="jumbotron">
+                <div id="title" class="container">
+                    <h1>Log In</h1> 
+                </div>  
+            </div> 
+        </section> 
+        <section>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Annapurna Cook Book</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:link outcome="index" value="Home"/></li>
+                        <li><h:link outcome="addMenu" value="Add New Menu" rendered="#{userBean.admin}"/></li>
+                        <li><h:link outcome="login" value="Login" rendered="#{!userBean.loggedIn}"/></li> 
+                        <li><h:form class="logout_link"><h:commandLink  action="#{userBean.logOut}" value="Logout" rendered="#{userBean.loggedIn}"/></h:form></li>  
+                    </ul>
+                </div>
+            </nav>
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please sign in</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h:form >
+                            <fieldset>
+                                <div class='form-group'> 
+                                    <h:inputText class="form-control" a:placeholder="User Name" value="#{userBean.loginUserName}"/>
+                                </div>
+                                <div class="form-group">
+                                    <h:inputSecret class='form-control'  a:placeholder="Password" value="#{userBean.loginUserPas}"/>
+                                </div>
+                                <div class="form-group">
+                                    <h:outputText style="color: red;" value="#{userBean.error}"/>
+                                </div>
+                                <h:commandButton value="login" action="#{userBean.loginAction}" class="btn btn-lg btn-success btn-block"/> 
+                            </fieldset>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
 </html>
