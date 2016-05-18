@@ -5,7 +5,9 @@
  */
 package edu.mum.cs545.recipebook.repository.impl;
 
+import edu.mum.cs545.recipebook.db.CommentEntityFacade;
 import edu.mum.cs545.recipebook.db.MenuItemEntityFacade;
+import edu.mum.cs545.recipebook.domain.CommentEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemStatus;
 import edu.mum.cs545.recipebook.domain.UserEntity;
@@ -19,9 +21,12 @@ import java.util.List;
 public class MenuRepositoryImpl implements MenuRepository{
 
     private MenuItemEntityFacade menuFacade;
+    private CommentEntityFacade commentFacade;
     
-    public MenuRepositoryImpl(MenuItemEntityFacade menuFacade){
+    
+    public MenuRepositoryImpl(MenuItemEntityFacade menuFacade, CommentEntityFacade commentFacade){
         this.menuFacade = menuFacade;
+        this.commentFacade = commentFacade;
     } 
   
     @Override
@@ -53,6 +58,17 @@ public class MenuRepositoryImpl implements MenuRepository{
     @Override
     public List<MenuItemEntity> findItemsByStatus(MenuItemStatus status) {
         return menuFacade.findItemsByStus(status);
+    }
+
+    @Override
+    public CommentEntity addNewComment(CommentEntity comment) {
+         commentFacade.create(comment);
+         return comment;
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
+        commentFacade.remove(commentFacade.find(commentId));
     }
     
 }

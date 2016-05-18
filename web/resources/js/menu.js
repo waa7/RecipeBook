@@ -5,3 +5,7 @@
  */
 
 
+$(document).ready(function () {
+   // $("#comment_container")
+  
+});

@@ -5,6 +5,7 @@
  */
 package edu.mum.cs545.recipebook.repository;
 
+import edu.mum.cs545.recipebook.domain.CommentEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemStatus;
 import edu.mum.cs545.recipebook.domain.UserEntity;
@@ -63,4 +64,20 @@ public interface MenuRepository {
      * @return list of {@link MenuItemEntity} with matching the status.
      */
     public List<MenuItemEntity> findItemsByStatus(MenuItemStatus status);
+    
+        /**
+     * Creates a new comment.
+     *
+     * @param comment the {@link CommentEntity} to create.
+     * @return the created {@link CommentEntity} instance.
+     */
+    public CommentEntity addNewComment(CommentEntity comment);
+
+    /**
+     * Deletes a specific comment.
+     *
+     * @param commentId the comment to delete
+     */
+    public void deleteComment(Long commentId);
+
 }

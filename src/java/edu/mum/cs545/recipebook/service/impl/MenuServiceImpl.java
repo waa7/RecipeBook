@@ -5,6 +5,7 @@
  */
 package edu.mum.cs545.recipebook.service.impl;
 
+import edu.mum.cs545.recipebook.db.CommentEntityFacade;
 import edu.mum.cs545.recipebook.db.MenuItemEntityFacade;
 import edu.mum.cs545.recipebook.domain.CommentEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
@@ -19,14 +20,14 @@ import edu.mum.cs545.recipebook.service.MenuService;
  *
  * @author user
  */
-public class MenuServiceImpl implements MenuService{
+public class MenuServiceImpl implements MenuService {
 
     private MenuRepository menuRepository;
-    
-    public MenuServiceImpl(MenuItemEntityFacade menuEntityFacade){
-        menuRepository = new MenuRepositoryImpl(menuEntityFacade);
+
+    public MenuServiceImpl(MenuItemEntityFacade menuEntityFacade, CommentEntityFacade commentFacade) {
+        menuRepository = new MenuRepositoryImpl(menuEntityFacade, commentFacade);
     }
-    
+
     @Override
     public MenuItemEntity addNewMenu(MenuItemEntity menuItem) {
         return menuRepository.addNewMenu(menuItem);
@@ -34,7 +35,7 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public void updateMenuItem(MenuItemEntity menuItem) {
-         menuRepository.updateMenuItem(menuItem);
+        menuRepository.updateMenuItem(menuItem);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public List<MenuItemEntity> findItemsByTitle(String title) {
-       return menuRepository.findItemsByTitle(title);
+        return menuRepository.findItemsByTitle(title);
     }
 
     @Override
@@ -54,17 +55,30 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public CommentEntity addNewComment(CommentEntity comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return menuRepository.addNewComment(comment); 
     }
 
     @Override
-    public void deleteComment(String commentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteComment(Long commentId) {
+        menuRepository.deleteComment(commentId);
     }
 
     @Override
     public List<MenuItemEntity> getCurrentMenuItems() {
         return menuRepository.findItemsByStatus(MenuItemStatus.CURRENT);
     }
-    
+
+    @Override
+    public void updateAvarageRating(MenuItemEntity menuItemEntity, int newRating) {
+        float currentAverage = menuItemEntity.getAverageRating();
+        int numberOfRatings = menuItemEntity.getNumberOfRatings();
+
+        float updatedAverageRating = ((currentAverage * numberOfRatings) + newRating) / (numberOfRatings + 1);
+
+        menuItemEntity.setAverageRating(updatedAverageRating);
+        menuItemEntity.setNumberOfRatings(numberOfRatings + 1);
+        
+        menuRepository.updateMenuItem(menuItemEntity);
+    }
+
 }

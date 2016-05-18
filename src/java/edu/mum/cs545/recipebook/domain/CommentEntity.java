@@ -31,14 +31,17 @@ public class CommentEntity implements Serializable {
     private String createdBy;
     
     private LocalDate commentDate;
+    
+    private String comment;
 
     public CommentEntity() {
     }
 
-    public CommentEntity( MenuItemEntity menuItemEntity, String createdBy, LocalDate commentDate) {
+    public CommentEntity( MenuItemEntity menuItemEntity, String createdBy, LocalDate commentDate, String comment) {
         this.menuItemEntity = menuItemEntity;
         this.createdBy = createdBy;
         this.commentDate = commentDate;
+        this.comment = comment;
     }
      
     public Long getId() {
@@ -71,6 +74,14 @@ public class CommentEntity implements Serializable {
 
     public void setCommentDate(LocalDate commentDate) {
         this.commentDate = commentDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
      
 
