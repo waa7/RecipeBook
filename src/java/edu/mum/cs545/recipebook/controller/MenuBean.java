@@ -109,8 +109,14 @@ public class MenuBean implements Serializable {
 
         menuService.addNewMenu(new MenuItemEntity("Boiled potatos", "Nice boiled potatoes", MenuType.MAIN_COURSE, Category.VEGAN, Arrays.asList("potato", "olive oil", "onion"), "Sample cooling instruction", userController.getCurrentUser(), MenuItemStatus.CURRENT));
 
+        
+        List<MenuItemEntity> demoEntity = DemoDataLoader.getDemoMenuEntity();
+        for(MenuItemEntity item : demoEntity){
+           item =  menuService.addNewMenu(item);
+        }
         menuItems = menuService.getCurrentMenuItems();
-
+ 
+ 
         List<MenuItemEntity> result1 = menuService.findItemsByTitle("Rice");
         List<MenuItemEntity> result2 = menuService.findItemsByUser(userController.getCurrentUser());
 
