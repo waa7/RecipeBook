@@ -1,50 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
-        <title>Login</title>        
-    </h:head>
-    <h:body>    
-        <section>
-            <div class="jumbotron">
-                <div class="container">
-                    <h1>Annapurna Recipe Book </h1>
-                    <p>Serve Student and Admin</p>
-                    <p>Please login</p>
-                </div>
-            </div>
-        </section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please sign in</h3>
-                    </div>
-                    <div class="panel-body">
-                        <h:form >
-                            <fieldset>
-                                <div class='form-group'>
-                                    User Name: <h:inputText class="form-control" value="#{userBean.user.userId}" />
-                                </div>
-                                <div class="form-group">
-                                    Password:  <h:inputSecret class='form-control'  value="#{userBean.user.password}"/>
-                                </div>
-                                <h:commandButton class="btn btn-lg btn-success btn-block" value="login"
-                                                 action="#{userBean.authenticate}"/>
-                            </fieldset>
-                        </h:form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </h:body>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+   <head><title>IGNORED</title></head>
+   <body>
+      <ui:composition template="/templates/masterLayout.xhtml">
+         <ui:define name="windowTitle">
+            Welcome #{userBean.loginUserName}
+         </ui:define>
+
+         <ui:define name="heading">
+            <ui:include src="/sections/login/header.xhtml"/>
+         </ui:define>
+
+         <ui:define name="content">
+            <h:form>
+               <h:panelGrid columns="2">
+                  UserName:
+                  <h:inputText id="name" value="#{userBean.loginUserName}"/>
+                  Password:
+                  <h:inputSecret id="password" value="#{userBean.loginUserPas}"/>
+                  <h:outputText id="mes" rendered="#{userBean.authered}" value="*User or Password not correct" style="color:red"></h:outputText>
+               </h:panelGrid>
+               <p>
+                  <h:commandButton value="Login"
+                                   action="#{userBean.loginAction}"/>
+               </p>
+            </h:form>
+         </ui:define>
+      </ui:composition>
+   </body>
 </html>

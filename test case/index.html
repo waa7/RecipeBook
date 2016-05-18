@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>PrimeUI</title>
+        <link rel="stylesheet" type="text/css" href="showcase/themes/aristo/theme.css" />
+        <link rel="stylesheet" type="text/css" href="showcase/resources/css/site.css" />
+        <link rel="stylesheet" type="text/css" href="showcase/resources/css/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="showcase/resources/css/perfect-scrollbar.css" />
+        <link rel="stylesheet" type="text/css" href="showcase/resources/css/sh.css" />
+        <link rel="stylesheet" type="text/css" href="showcase/resources/icons/css/font-awesome.min.css" />
+        <script type="text/javascript" src="showcase/resources/js/jquery.js"></script>
+        <script type="text/javascript" src="showcase/resources/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="showcase/resources/js/perfect-scrollbar.js"></script>
+        <script type="text/javascript" src="showcase/resources/js/site.js"></script>
+        <script type="text/javascript" src="showcase/resources/js/index.js"></script>
+
+        <!-- Dependencies of some widgets -->
+        <script type="text/javascript" src="showcase/resources/js/plugins/plugins-all.js"></script>
+
+        <!-- Mustache for templating support -->
+        <script type="text/javascript" src="showcase/resources/js/plugins/mustache.min.js"></script>
+
+        <!-- X-TAG for PrimeElements -->
+        <script type="text/javascript" src="showcase/resources/js/x-tag-core.min.js"></script>
+
+        <!-- PrimeUI -->
+        <link rel="stylesheet" href="build/primeui.css" />
+        <script type="text/javascript" src="build/primeui.js"></script>
+        <script type="text/javascript" src="build/primeelements.js"></script>
+    </head>
+
+    <body>
+        <div class="PC">
+            <div id="MENUSIDE">
+                <div id="MENUSIDEindent">
+                    <span id="LOGO" class="bordersOfMenuSide">
+                        <img alt="logo" src="showcase/resources/images/logo.svg" />
+                        <img id="BlueLogo" alt="logo" src="showcase/resources/images/logoBlue.svg" class="hiddenLogo"/>
+                    </span>
+                    <span id="SubMenu-PrimeElements" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.changePageWithLink('primeelements.html')"><img src="showcase/resources/images/mono/components.svg" /><img class="hiddenIcons" src="showcase/resources/images/mono/componentsBlue.svg" /><span class="MainLinkText">Web Components</span></span>
+                    
+                </div>
+            </div>
+
+            <div id="CONTENTSIDE">
+                <div id="CONTENTSIDEindent">
+
+                    <!-- header bar start-->
+                    <div class="ContentSideSections" id="PFTopLinksCover" style="height:60px;">
+                        <a id="LOGOTEXTSIDE" href="/">
+                            <span class="dispBlock logoDarkText fontSize30">Dish</span>
+                            <span class="dispBlock logoBlueText fontSize30 mediumFont">SHOWCASE</span>
+                        </a>
+
+                        <a href="http://forum.primefaces.org/viewforum.php?f=16" class="PFTopLinks floatRight boldFont"><img alt="mockosx" src="showcase/resources/images/community.svg" /><span class="PFDarkText">Forum</span></a>
+
+                        <span class="PFTopLinks floatRight boldFont cursorPointer" id="themeSwitcher">
+                            <img src="showcase/resources/images/themeswitcher.svg" /><span class="PFDarkText">Create Dish</span>
+                            
+                        </span>
+                        <span class="PFTopLinks floatRight boldFont cursorPointer" id="PremiumLayouts">
+                            <img src="showcase/resources/images/layouts.svg" /><span class="PFDarkText">Static</span>
+                            <div id="PremiumLayoutsPanel" class="navOverlay">
+                                <a href="http://www.primefaces.org/layouts/modena-primeui"><span class="ui-text">Modena</span></a>
+                                <a href="http://www.primefaces.org/layouts/rio-primeui"><span class="ui-text">Rio</span></a>
+                                <a href="http://www.primefaces.org/layouts/adamantium-primeui"><span class="ui-text">Adamantium</span></a>
+                            </div>
+                        </span>
+                        <a href="https://github.com/primefaces/primeui/releases" class="PFTopLinks floatRight boldFont hashed"><img alt="mockosx" src="showcase/resources/images/download.svg" /><span class="PFDarkText">Dish Repository</span></a>
+                        <a href="setup.html" class="PFTopLinks floatRight boldFont marginRight20 hashed"><img alt="mockosx" src="showcase/resources/images/setup.svg" /><span class="PFDarkText">QuickStart</span></a>
+					</div>
+                    <!-- header bar end-->
+
+                    <div id="widgetdemo">
+                        
+
+                        <div class="ContentSideSections overHidden PFLayouts">
+                            <span class="dispBlock logoBlueText fontSize30 mediumFont">Test1</span>
+                            <span class="defaultText">Explain1.</span>
+                            <div style="padding:30px">
+                                <div class="Content33 floatLeft overHidden">
+                                    <a href="http://www.primefaces.org/layouts/modena-primeui"><img src="showcase/resources/images/layouts/modena.png" style="width:100%" /></a>
+                                </div>
+                                <div class="Content33 floatLeft overHidden">
+                                    <a href="http://www.primefaces.org/layouts/rio-primeui"><img src="showcase/resources/images/layouts/rio.png" style="width:100%" /></a>
+                                </div>
+                                <div class="Content33 floatLeft overHidden">
+                                    <a href="http://www.primefaces.org/layouts/adamantium-primeui"><img src="showcase/resources/images/layouts/adamantium.png" style="width:100%" /></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ContentSideSections overHidden">
+                            <div class="Content33 floatLeft overHidden" style="min-height:200px">
+                                <div class="BoxesIndent">
+                                    <img src="showcase/resources/images/optimushear.svg" class="floatLeft overHidden" style="height:60px; margin-right:20px;"/>
+                                    <span class="floatLeft PFGrayText fontSize18 mediumFont overHidden">Blog<br /><span class="green fontSize24">NEWS</span></span>
+                                    <div id="latestNews" class="dispTable overHidden Content100 logoBlueText boldFont fontSize18" style=" padding-top:20px;">
+                                        <span class="gray dispBlock regularFont fontSize14"></span><br />
+                                        <a href="http://blog.primefaces.org" class="pink boldItalicFont underline fontSize14">View All</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+
+                    <!-- footer start-->
+                    <div class="ContentSideSections">
+                        <span class="floatLeft fontSize14 gray"><a href="http://www.primetek.com.tr">PrimeTek</a>, Copyright &copy; 2016</span>
+                        <span class="floatRight fontSize14 gray">All rights reserved</span>
+                        <div style="clear:both"></div>
+                    </div>
+                    <!-- footer end-->
+
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript" src="showcase/resources/js/sh.js"></script>
+    </body>
+</html>
