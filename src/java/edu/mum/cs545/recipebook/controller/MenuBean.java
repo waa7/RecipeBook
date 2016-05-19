@@ -5,13 +5,11 @@
  */
 package edu.mum.cs545.recipebook.controller;
 
-import edu.mum.cs545.recipebook.db.MenuItemEntityFacade;
 import edu.mum.cs545.recipebook.domain.Category;
 import edu.mum.cs545.recipebook.domain.CommentEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemEntity;
 import edu.mum.cs545.recipebook.domain.MenuItemStatus;
 import edu.mum.cs545.recipebook.domain.MenuType;
-import edu.mum.cs545.recipebook.domain.UserEntity;
 import edu.mum.cs545.recipebook.domain.UserRole;
 import java.io.Serializable;
 import java.util.List;
@@ -22,26 +20,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import edu.mum.cs545.recipebook.service.MenuService;
 import edu.mum.cs545.recipebook.service.impl.MenuServiceImpl;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.ServletContext;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.RateEvent;
 import org.primefaces.model.DualListModel;
@@ -104,18 +96,18 @@ public class MenuBean implements Serializable {
 
         List<MenuItemEntity> demoList = DemoDataLoader.getDemoMenuEntity();
         for (MenuItemEntity item : demoList) {
-            item = menuService.addNewMenu(item); 
+            item = menuService.addNewMenu(item);
         }
-         menuItems = menuService.getCurrentMenuItems(); 
-         for (MenuItemEntity item : menuItems) { 
+        menuItems = menuService.getCurrentMenuItems();
+        /*   for (MenuItemEntity item : menuItems) { 
             List<CommentEntity> commentEntities = DemoDataLoader.getDemoComment(item); 
             for(CommentEntity comment: commentEntities){
                 menuService.addNewComment(comment);
             }
         }
-       
+         */
         sourceIngredientList = Arrays.asList("canola oil", "olive oil", "Sunflower oil", "Corn oil", "Couscous", "Dried lentils", "Beaan", "Oats", "Barely", "Millet", "Rice", "Berries", "salt", "mustard", "Red pepper", "Black pepper", "Bay leaves", "Cloves");
-        selectedIngredients = new ArrayList<>(); 
+        selectedIngredients = new ArrayList<>();
         ingredients = new DualListModel<>(sourceIngredientList, selectedIngredients);
 
     }
@@ -341,16 +333,13 @@ public class MenuBean implements Serializable {
     }
 
     public void addNewMenu(AjaxBehaviorEvent event) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UserBean uController = (UserBean) facesContext.getApplication().createValueBinding("#{userBean}").getValue(facesContext);
-
-        UserEntity userEntity = uController.getCurrentUser();
+        
         MenuItemStatus status = MenuItemStatus.CURRENT;
-        if (userEntity.getUserRole() != UserRole.ADMIN) {
+        if (userController.getCurrentUser().getUserRole() != UserRole.ADMIN) {
             status = MenuItemStatus.SUGGESTED;
         }
         MenuItemEntity newMenu = new MenuItemEntity(this.title, this.description, MenuType.values()[this.menuType], Category.values()[this.category],
-                this.selectedIngredients, this.cookingInstruction, uController.getCurrentUser(), status);
+                this.selectedIngredients, this.cookingInstruction, userController.getCurrentUser(), status);
         newMenu = menuService.addNewMenu(newMenu);
 
         if (newMenu != null) {
@@ -362,7 +351,7 @@ public class MenuBean implements Serializable {
 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Menu Added", "You have successfully added the new menu");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            menuItems = menuService.findItemsByUser(userEntity);
+            menuItems = menuService.getCurrentMenuItems();
 
             title = "";
             description = "";

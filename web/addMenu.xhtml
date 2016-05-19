@@ -47,22 +47,22 @@ and open the template in the editor.
             <div class="row"> 
                 <p:inputText label="Title" placeholder="Title" value="#{menuBean.title}"/> <br/><br/>
                 <p:inputTextarea cols="30" placeholder="Short description" value="#{menuBean.description}"/><br/><br/>
-                <h4 style="margin-top: 0">Select Ingredients</h4><br/> 
+                <h4 style="margin-top: 0">Select Ingredients</h4>
                 <p:pickList id="pickList" value="#{menuBean.ingredients}" var="ingredients" itemLabel="#{ingredients}" itemValue="#{ingredients}" />
 
-                <h4>Select class </h4> <br/>
+                <h4>Select category </h4>
                 <p:selectOneMenu id="menuCategory" value="#{menuBean.category}">
                     <f:selectItem itemLabel="Vegiterian" itemValue="0" />
                     <f:selectItem itemLabel="Vegan" itemValue="1" /> 
-                </p:selectOneMenu> <br/><br/>
-                <h4>Select type </h4> <br/>
+                </p:selectOneMenu> <br/>
+                <h4>Select type </h4> 
                 <p:selectOneMenu id="menuType" value="#{menuBean.menuType}">
                     <f:selectItem itemLabel="Main course" itemValue="0" />
                     <f:selectItem itemLabel="Dessert" itemValue="1" /> 
                     <f:selectItem itemLabel="Salad" itemValue="2" />
                     <f:selectItem itemLabel="Salad dressing" itemValue="3" />
                     <f:selectItem itemLabel="Drink" itemValue="4" />   
-                </p:selectOneMenu>  <br/><br/> 
+                </p:selectOneMenu>  <br/> <br/>
                 <p:inputTextarea cols="50" rows="10" placeholder="Cooking instructions" value="#{menuBean.cookingInstruction}"/><br/><br/>
 
                 <p:fileUpload value="#{menuBean.imageFile}" mode="simple" allowTypes="*.jpg" label="Choose image file"/> <br/><br/>

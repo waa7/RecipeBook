@@ -78,10 +78,7 @@ public class UserBean implements Serializable {
         userService.addUser(new UserEntity("Admin1", "xx@xx.com", Utils.getHash("password"), UserRole.ADMIN));
         userService.addUser(new UserEntity("Admin2", "xx@xx.com", Utils.getHash("password"), UserRole.ADMIN));
 
-        UserEntity user = userService.findUserByName("Admin2");
-        if (user != null) {
-            System.out.println(user.getUserName());
-        }
+        currentUser = userService.findUserByName("admin"); 
         loggedIn = true;
     }
 
